@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -18,6 +19,13 @@ export function SigIn() {
   async function handleSignIn(data: SignInForm) {
     await new Promise((resolve) => setTimeout(resolve, 2000))
     console.log(data)
+
+    toast.success('Enviamos um link de autenticação para seu e-mail.', {
+      action: {
+        label: 'Reenivar',
+        onClick : ()=> {},
+      }
+    })
   }
 
   return (
