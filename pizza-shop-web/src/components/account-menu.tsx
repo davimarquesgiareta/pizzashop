@@ -8,8 +8,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useQuery } from "@tanstack/react-query";
+import { getProfile } from "@/api/get-profile";
+import { getManagedRestaurant } from "@/api/get-managed-restaurant";
 
 export default function AccountMenu() {
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+  });
+
+  const { data: manageRestaurant } = useQuery({
+    queryKey: ["manageRestaurant"],
+    queryFn: getManagedRestaurant,
+  });
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -17,15 +30,15 @@ export default function AccountMenu() {
           variant="outline"
           className="flex select-none items-center gap-2"
         >
-          Pizza Shop
+          {manageRestaurant?.name}
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="flex flex-col">
-          <span>Davi Marques</span>
+          <span>{profile?.name}</span>
           <span className="text-xs font-normal text-muted-foreground">
-            davimgcb@gmail.com
+            {profile?.name}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -38,7 +51,6 @@ export default function AccountMenu() {
           <LogOut className="mr-2 h-4 w-4" />
           <span>Sair</span>
         </DropdownMenuItem>
-
       </DropdownMenuContent>
     </DropdownMenu>
   );
