@@ -1,6 +1,8 @@
+import { signIn } from "@/api/sign-in";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
+import { useMutation } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
@@ -21,16 +23,23 @@ export function SigIn() {
     formState: { isSubmitting },
   } = useForm<SignInForm>();
 
-  async function handleSignIn(data: SignInForm) {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log(data);
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: signIn,
+  });
 
-    toast.success("Enviamos um link de autenticação para seu e-mail.", {
-      action: {
-        label: "Reenivar",
-        onClick: () => {},
-      },
-    });
+  async function handleSignIn(data: SignInForm) {
+    try {
+      await authenticate({ email: data.email });
+
+      toast.success("Enviamos um link de autenticação para seu e-mail.", {
+        action: {
+          label: "Reenivar",
+          onClick: () => {},
+        },
+      });
+    } catch {
+      toast.error("Credenciais inválidas");
+    }
   }
 
   return (
@@ -38,9 +47,7 @@ export function SigIn() {
       <Helmet title="Login" />
       <div className="p-8">
         <Button variant="ghost" asChild className="absolute right-8 top-8">
-          <Link to="/sign-up">
-            Novo estabelecimento
-          </Link>
+          <Link to="/sign-up">Novo estabelecimento</Link>
         </Button>
 
         <div className="flex w-[350px] flex-col justify-center gap-6">
