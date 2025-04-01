@@ -16,7 +16,7 @@ const signInForm = z.object({
 
 type SignInForm = z.infer<typeof signInForm>;
 
-export function SigIn() {
+export function SignIn() {
   const [searchParams] = useSearchParams();
 
   const {
