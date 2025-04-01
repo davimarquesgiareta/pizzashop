@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
 import { OrderStatus } from "./order-status";
 import "@testing-library/jest-dom";
+import React from "react";
 
 describe("Order Status", () => {
   it("should display the right text when order status is pending", () => {
